@@ -1,0 +1,48 @@
+%button.btn.btn-default{"data-target" => "#approvalModal", "data-toggle" => "modal"}
+  Add Tickets
+/ Modal
+#approvalModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "approvalModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+          %span.sr-only Close
+        %h4.modal-title Create Ticket Groups
+      .modal-body
+        = form_tag("/ticket_groups/mass_add", method: "get")
+        = label_tag :sport, "What Sport?"
+        = select_tag :sport, options_for_select(TicketGroup.sports)
+        %br
+        = label_tag :home_team, "Who is the Home Team?"
+        = text_field_tag :home_team
+        %br
+        = label_tag :venue, "Where are they playing?"
+        = text_field_tag :venue
+        %br
+        = label_tag :event_time, "What is the start time?"
+        #datetimepicker3.input-group.date
+          = text_field_tag :event_time
+          %span.input-group-addon{style:'display:inline;padding:3px'}
+            %span.glyphicon.glyphicon-time
+        %br
+        = label_tag :num_tgs, "How Many Ticket Groups are you adding?"
+        = select_tag :num_tgs, options_for_select(1..40)
+        %br
+        = label_tag :row, "Where are the Seats?"
+        = text_field_tag :section, nil, placeholder: "Section"
+        = text_field_tag :row, nil, placeholder: "Row"
+        %br
+        = label_tag :seat_numbers, "Seat Numbers:"
+        = select_tag :seat_numbers_start, options_for_select(1..40)
+        = select_tag :seat_numbers_end, options_for_select(1..40)
+        %br
+        = label_tag :face_value, "Face Value:"
+        = text_field_tag :face_value
+
+      .modal-footer
+        %button.btn.btn-danger{"data-dismiss" => "modal", :type => "button"} Cancel
+        = submit_tag 'Create Tickets', class: 'btn btn-success'
+    / /.modal-content
+  / /.modal-dialog
+/ /.modal
