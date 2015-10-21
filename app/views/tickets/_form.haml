@@ -1,0 +1,37 @@
+- if params["action"] == "mass_edit"
+  - url = mass_update_tickets_path
+  - ids = @ticket_ids
+
+- else
+  - url = ticket_path
+  - ids = @ticket.id
+
+= form_for @ticket,  url: url, method: 'put' do |f|
+  - if params["action"] != "mass_edit"
+    %h2 Editing Seat: #{@ticket.seat }
+  - else
+    = f.label :section
+    = f.text_field :section
+    = f.label :row
+    = f.text_field :row
+  %br
+  = f.label :face_value
+  = f.text_field :face_value
+  %br
+  = f.label :sold?
+  = f.check_box :sold
+  %br
+  = f.label :sale_price
+  = f.text_field :sale_price
+  %br
+  = f.label :use_type
+  = f.select :use_type, Ticket.use_types, include_blank: true
+  %br
+  = f.label :user
+  = f.text_field :user
+  %br
+  = f.label :notes
+  = f.text_field :notes
+  %br
+
+  = f.submit 'UPDATE'

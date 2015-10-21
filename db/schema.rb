@@ -18,7 +18,8 @@ ActiveRecord::Schema.define(version: 20150924203327) do
 
   create_table "ticket_groups", force: :cascade do |t|
     t.string   "date"
-    t.string   "location"
+    t.string   "time"
+    t.string   "venue"
     t.string   "sport"
     t.text     "notes"
     t.string   "home_team"

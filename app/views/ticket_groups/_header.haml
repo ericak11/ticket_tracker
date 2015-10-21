@@ -10,7 +10,7 @@
           %span.sr-only Close
         %h4.modal-title Create Ticket Groups
       .modal-body
-        = form_tag("/ticket_groups/mass_add", method: "get")
+        = form_tag("/ticket_groups", method: "post")
         = label_tag :sport, "What Sport?"
         = select_tag :sport, options_for_select(TicketGroup.sports)
         %br
@@ -20,9 +20,9 @@
         = label_tag :venue, "Where are they playing?"
         = text_field_tag :venue
         %br
-        = label_tag :event_time, "What is the start time?"
+        = label_tag :time, "What is the start time?"
         #datetimepicker3.input-group.date
-          = text_field_tag :event_time
+          = text_field_tag :time
           %span.input-group-addon{style:'display:inline;padding:3px'}
             %span.glyphicon.glyphicon-time
         %br
