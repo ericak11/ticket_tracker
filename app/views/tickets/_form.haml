@@ -4,7 +4,6 @@
 
 - else
   - url = ticket_path
-  - ids = @ticket.id
 
 = form_for @ticket,  url: url, method: 'put' do |f|
   - if params["action"] != "mass_edit"
@@ -33,5 +32,6 @@
   = f.label :notes
   = f.text_field :notes
   %br
-
+  - if @ticket_ids.present?
+    = f.hidden_field :ids, value: @ticket_ids
   = f.submit 'UPDATE'
