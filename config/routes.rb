@@ -21,6 +21,12 @@ Rails.application.routes.draw do
         get 'mass_edit'
       end
     end
+    resources :tickets, only: [:edit, :update] do
+      collection do
+        get 'mass_edit'
+        put 'mass_update'
+      end
+    end
 
   # Example resource route with sub-resources:
   #   resources :products do

@@ -1,6 +1,15 @@
 - if @ticket_groups.any?
-  = form_for @ticket_groups,  url: mass_edit_ticket_groups_path do |f|
+  = form_for @ticket_groups,  url: mass_edit_ticket_groups_path, method: 'get' do |f|
     - @ticket_groups.each do |tg|
-      = f.fields_for tg, :html => { :multipart => true }  do |tgf|
-        = tgf.check_box :away_team
-    = f.submit 'add ticket_groups'
+      %h1 Ticket Group #{tg.id}
+      = f.fields_for :"#{tg.id}" do |tgf|
+        = tgf.label :away_team
+        = tgf.text_field :away_team
+        %br
+        = tgf.label :date
+        = tgf.date_field :date
+        %br
+        = tgf.label :notes
+        = tgf.text_field :notes
+    %br
+    = f.submit 'add ticket groups'

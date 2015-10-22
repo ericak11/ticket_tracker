@@ -1,0 +1,41 @@
+%h2
+  = "#{Date.parse(@ticket_group.date).strftime(" %b %d %Y")} @ #{@ticket_group.time}"
+  = "(#{@ticket_group.venue})"
+%h2
+  = @ticket_group.home_team + " VS. " + @ticket_group.away_team
+%p
+  = @ticket_group.notes
+  = form_for @ticket_group,  url: ticket_group_path, method: 'put' do |f|
+    = f.label :notes
+    = f.text_field :notes
+    = f.submit "add/update notes"
+
+%h3
+  Tickets
+  =link_to("Edit All Tickets", mass_edit_tickets_path)
+%br
+- @ticket_group.tickets.each do |ticket|
+  Section:
+  = ticket.section
+  Row:
+  = ticket.row
+  Seat:
+  = ticket.seat
+  - if ticket.sold
+    %br
+    = "Tickets Sold for #{ticket.sale_price}"
+  %br
+  Face Value: $
+  = ticket.face_value.to_f
+  %br
+  Notes:
+  = ticket.notes
+  %br
+  Use Type:
+  = ticket.use_type
+  %br
+  Used By:
+  = ticket.user
+  %br
+  =link_to("Edit This Ticket", edit_ticket_path(ticket.id))
+  %hr
