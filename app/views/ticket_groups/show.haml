@@ -12,7 +12,7 @@
 
 %h3
   Tickets
-  =link_to("Edit All Tickets", mass_edit_tickets_path)
+  =link_to("Edit All Tickets", mass_edit_tickets_path(ticket_ids: @ticket_group.tickets.collect(&:id)))
 %br
 - @ticket_group.tickets.each do |ticket|
   Section:
