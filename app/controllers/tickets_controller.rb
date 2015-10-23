@@ -30,7 +30,7 @@ class TicketsController < ApplicationController
   end
 
   def ticket_params
-    params["ticket"].permit(:face_value, :sold, :sale_price, :use_type, :user, :notes)
+    params["ticket"].permit(:face_value, :sold, :sale_price, :use_type, :user, :notes).reject!{|key, value| value==""}
   end
   def find_tickets
     ids = params["ticket"].delete :ids
