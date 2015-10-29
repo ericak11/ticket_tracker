@@ -7,7 +7,10 @@
         = tgf.text_field :away_team
         %br
         = tgf.label :date
-        = tgf.date_field :date
+        .datetimepicker4.input-group.date
+          = tgf.text_field :date
+          %span.input-group-addon{style:'display:inline;padding:3px'}
+            %span.glyphicon.glyphicon-calendar
         %br
         = tgf.label :notes
         = tgf.text_field :notes

@@ -4,6 +4,7 @@
 %h2
   = @ticket_group.home_team + " VS. " + @ticket_group.away_team
 %p
+  Notes:
   = @ticket_group.notes
   = form_for @ticket_group,  url: ticket_group_path, method: 'put' do |f|
     = f.label :notes
@@ -12,7 +13,6 @@
 
 %h3
   Tickets
-  =link_to("Edit All Tickets", mass_edit_tickets_path(ticket_ids: @ticket_group.tickets.collect(&:id)))
 %br
 - @ticket_group.tickets.each do |ticket|
   Section:

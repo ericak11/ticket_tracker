@@ -1,0 +1,32 @@
+%h3 #{Date.parse(@ticket_group.date).strftime(" %b %d %Y")} - #{@ticket_group.home_team} VS. #{@ticket_group.away_team}
+= form_for @ticket_group, url: ticket_group_path, method: 'put', html: {class: 'form-horizontal'} do |f|
+  %div.form-group
+    = f.label :home_team, class: "col-md-2 control-label"
+    %div.col-md-3
+      = f.text_field :home_team, class: "form-control"
+  %div.form-group
+    = f.label :away_team, class: "col-md-2 control-label"
+    %div.col-md-3
+      = f.text_field :away_team, class: "form-control"
+  %div.form-group
+    = f.label :time, class: "col-md-2 control-label"
+    #datetimepicker3.input-group.date.col-md-3
+      = f.text_field :time, class: "form-control", style: 'margin-left:15px;'
+      %span.input-group-addon
+        %span.glyphicon.glyphicon-time{style: 'margin-left:15px;'}
+  %div.form-group
+    = f.label :date, class: "col-md-2 control-label"
+    .datetimepicker4.input-group.date.col-md-3
+      = f.text_field :date, class: "form-control", style: 'margin-left:15px;'
+      %span.input-group-addon{style: 'padding-left: 30px;'}
+        %span.glyphicon.glyphicon-calendar
+  %div.form-group
+    = f.label :venue, class: "col-md-2 control-label"
+    %div.col-md-3
+      = f.text_field :venue, class: "form-control"
+  %div.form-group
+    = f.label :sport, class: "col-md-2 control-label"
+    %div.col-md-3
+      = f.select :sport, options_for_select(TicketGroup.sports),{}, {class: "form-control"}
+  %div.col-md-offset-2
+    = f.submit 'Edit', class: "btn btn-primary btn-lg"

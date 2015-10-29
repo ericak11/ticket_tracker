@@ -1,0 +1,21 @@
+%div.col-sm-8.col-sm-offset-2
+  %div.panel.panel-info
+    %div.panel-heading
+      Filter Ticket Groups
+    %div.panel-body
+      %form.form-horizontal.form-group-lg
+        = bootstrap_form_tag url: "/", method: "get", layout: :horizontal, label_col: "col-sm-1", control_col: "col-sm-10"  do |f|
+          = f.select :sport, options_for_select(TicketGroup.sports), include_blank: true
+          = f.form_group do
+            = f.check_box :past_events, inline:true
+            = f.check_box :future_events, inline:true
+          = f.form_group do
+            = f.check_box :sold_tickets, inline:true
+            = f.check_box :listed_tickets, inline:true
+            = f.check_box :unlisted_tickets, inline:true
+          = f.form_group do
+            = f.check_box :personal, inline:true
+            = f.check_box :business, inline:true
+            = f.check_box :unused, inline:true
+          %div.col-sm-offset-10
+            = f.primary 'Filter'

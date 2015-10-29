@@ -1,8 +1,15 @@
-= render "header"
 - if @ticket_groups.present?
-  - @ticket_groups.each do |ticket_group|
-    %h2
-      = "#{Date.parse(ticket_group.date).strftime(" %b %d %Y")} @ #{ticket_group.time}:"
-      = link_to "#{ticket_group.home_team} vs. #{ticket_group.away_team}", ticket_group_path(ticket_group.id)
+  = render "filters"
+  %table.table.table-hover
+    %thead
+      %th Date
+      %th Time
+      %th Teams
+    %tbody
+      - @ticket_groups.each do |ticket_group|
+        %tr
+          %td= Date.parse(ticket_group.date).strftime(" %b %d %Y")
+          %td= ticket_group.time
+          %td= link_to "#{ticket_group.home_team} vs. #{ticket_group.away_team}", ticket_group_path(ticket_group.id)
 - else
   %h1 There are no ticket groups
