@@ -1,5 +1,6 @@
 = navbar fixed: :top, container: 'fluid' do
-  = navbar_header brand: 'Tix Tracker', brand_link: '/'
+  = navbar_header brand: 'Tix Tracker', brand_link: '/' do
+    = image_tag 'favicon.ico', class: 'img img-circle img-responsive', style: 'height:30px;margin-top:8px;'
   = navbar_collapse do
     = navbar_group class: 'foo', id: 'menu' do
       = navbar_item "Add Tickets", "#", "data-target" => "#approvalModal", "data-toggle" => "modal"
