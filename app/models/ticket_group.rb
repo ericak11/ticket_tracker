@@ -4,7 +4,7 @@ class TicketGroup < ActiveRecord::Base
   accepts_nested_attributes_for :tickets
 
   def self.sports
-    ['Hockey', 'Football']
+    ['Hockey', 'Football', 'Basketball', 'Misc']
   end
 
   def all_tickets_sold
