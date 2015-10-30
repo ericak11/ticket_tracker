@@ -27,6 +27,6 @@
   %div.form-group
     = f.label :sport, class: "col-md-2 control-label"
     %div.col-md-3
-      = f.select :sport, options_for_select(TicketGroup.sports),{}, {class: "form-control"}
+      = f.select :sport, options_for_select(TicketGroup.sports, @ticket_group.sport),{}, {class: "form-control"}
   %div.col-md-offset-2
     = f.submit 'Edit', class: "btn btn-primary btn-lg"

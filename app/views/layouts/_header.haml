@@ -18,7 +18,7 @@
               = f.text_field :time, hide_label: true
               %span.input-group-addon
                 %span.glyphicon.glyphicon-time
-          = f.select :num_tgs, options_for_select(1..40), label: "How Many Ticket Groups are you adding?"
+          = f.select :num_tgs, options_for_select(1..15), label: "How Many Ticket Groups are you adding?"
           = f.fields_for @new_ticket do |t|
             = t.label "Ticket Information"
             = t.text_field :section
