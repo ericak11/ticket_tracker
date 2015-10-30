@@ -33,7 +33,7 @@
         %td= ticket.row
         %td= ticket.seat
         %td= "$#{ticket.face_value.to_f}"
-        %td= ticket.sale_price == 0.0 ? "" : "$#{ticket.sale_price.to_f}"
+        %td= ticket.sale_price == nil ? "" : "$#{ticket.sale_price.to_f}"
         %td= ticket.notes
         %td= ticket.use_type
         %td= ticket.user
