@@ -17,6 +17,7 @@ class TicketsController < ApplicationController
 
   def mass_update
     @tickets.update_all(ticket_params)
+    update_ticket_users(params["ticket"]["user"].split(",")) if params["ticket"]["user"].present?
     redirect_to ticket_group_path(@tickets.first.ticket_group.id)
   end
 
@@ -30,11 +31,16 @@ class TicketsController < ApplicationController
   end
 
   def ticket_params
-    params["ticket"].permit(:face_value, :sold, :sale_price, :use_type, :user, :notes).reject!{|key, value| value==""}
+    params["ticket"].permit(:face_value, :sold, :sale_price, :use_type, :notes, :user).reject!{|key, value| value==""}
   end
   def find_tickets
     ids = params["ticket"].delete :ids
     ticket_ids = ids.split(" ")
-    @tickets = Ticket.where(id: ticket_ids)
+    @tickets = Ticket.where(id: ticket_ids).order(seat: :asc)
+  end
+  def update_ticket_users(users)
+    users.each_with_index do |user, index|
+      @tickets[index].update(user: user) if @tickets[index].present?
+    end
   end
 end

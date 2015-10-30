@@ -3,7 +3,7 @@
 #approvalModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "approvalModalLabel", :role => "dialog", :tabindex => "-1"}
   .modal-dialog
     .modal-content
-      .modal-header
+      .modal-header.bg-primary
         %button.close{"data-dismiss" => "modal", :type => "button"}
           %span{"aria-hidden" => "true"} &times;
           %span.sr-only Close
@@ -27,6 +27,7 @@
             = t.label :seat_numbers, "Seat Numbers"
             = t.select :seat_numbers_start, options_for_select(1..40), label: "First Seat"
             = t.select :seat_numbers_end, options_for_select(1..40), label: "Last Seat"
+            = t.hidden_field :use_type, value: "Unlisted"
           %button.btn.btn-danger{"data-dismiss" => "modal", :type => "button"} Cancel
           = f.submit 'Create Tickets', class: 'btn btn-success', id: 'modal-submit-button'
     / /.modal-content

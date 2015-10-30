@@ -1,21 +1,23 @@
 %div.col-sm-8.col-sm-offset-2
   %div.panel.panel-info
     %div.panel-heading
+      %span.glyphicon.glyphicon-cog
       Filter Ticket Groups
     %div.panel-body
       %form.form-horizontal.form-group-lg
         = bootstrap_form_tag url: "/", method: "get", layout: :horizontal, label_col: "col-sm-1", control_col: "col-sm-10"  do |f|
-          = f.select :sport, options_for_select(TicketGroup.sports), include_blank: true
-          = f.form_group do
-            = f.check_box :past_events, inline:true
-            = f.check_box :future_events, inline:true
-          = f.form_group do
-            = f.check_box :sold_tickets, inline:true
-            = f.check_box :listed_tickets, inline:true
-            = f.check_box :unlisted_tickets, inline:true
-          = f.form_group do
-            = f.check_box :personal, inline:true
-            = f.check_box :business, inline:true
-            = f.check_box :unused, inline:true
-          %div.col-sm-offset-10
-            = f.primary 'Filter'
+          = f.fields_for :filter do |ff|
+            = ff.select :sport, options_for_select(TicketGroup.sports, @filters[:sport]), include_blank: true
+            = ff.form_group do
+              = ff.check_box :past_events, checked: @filters[:past_events] == "1" ? true : false, inline:true
+              = ff.check_box :future_events, checked: @filters[:future_events] == "1" ? true : false, inline:true
+            = ff.form_group do
+              = ff.check_box :sold_tickets, checked: @filters[:sold_tickets] == "1" ? true : false, inline:true
+              = ff.check_box :listed_tickets, checked: @filters[:listed_tickets] == "1" ? true : false, inline:true
+              = ff.check_box :unlisted_tickets, checked: @filters[:unlisted_tickets] == "1" ? true : false, inline:true
+            = ff.form_group do
+              = ff.check_box :personal, checked: @filters[:personal] == "1" ? true : false, inline:true
+              = ff.check_box :business, checked: @filters[:business] == "1" ? true : false, inline:true
+              = ff.check_box :unused, checked: @filters[:unused] == "1" ? true : false, inline:true
+            %div.col-sm-offset-10
+              = ff.primary 'Filter'

@@ -11,22 +11,24 @@ $(document).ready(function() {
   $('.datetimepicker4').datetimepicker({
     format: 'YYYY-MM-DD'
   });
- $("#_past_events").change(function() {
+ $("#_filter_past_events").change(function() {
     if(this.checked) {
-      $("#_listed_tickets").attr("disabled", true);
-      $("#_unlisted_tickets").attr("disabled", true);
-      $("#_future_events").attr("disabled", true);
+      $("#_filter_listed_tickets").attr("disabled", true);
+      $("#_filter_unlisted_tickets").attr("disabled", true);
+      $("#_filter_future_events").attr("disabled", true);
     } else {
-      $("#_listed_tickets").removeAttr("disabled");
-      $("#_unlisted_tickets").removeAttr("disabled");
-      $("#_future_events").removeAttr("disabled");
+      $("#_filter_listed_tickets").removeAttr("disabled");
+      $("#_filter_unlisted_tickets").removeAttr("disabled");
+      $("#_filter_future_events").removeAttr("disabled");
     }
   });
-  $("#_future_events").change(function() {
+  $("#_filter_future_events").change(function() {
     if(this.checked) {
-      $("#_unused").attr("disabled", true);
+      $("#_filter_unused").attr("disabled", true);
+      $("#_filter_past_events").attr("disabled", true);
     } else {
-      $("#_unused").removeAttr("disabled");
+      $("#_filter_unused").removeAttr("disabled");
+      $("#_filter_past_events").attr("disabled", true);
     }
   });
 })

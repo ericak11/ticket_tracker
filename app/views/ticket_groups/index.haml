@@ -1,15 +1,31 @@
+= render "filters"
 - if @ticket_groups.present?
-  = render "filters"
-  %table.table.table-hover
+  %table.table.table-hover.table-responsive
     %thead
       %th Date
       %th Time
       %th Teams
+      %th Venue
+      %th # of Tickets
+      %th All Sold?
+      %th Use Types
     %tbody
       - @ticket_groups.each do |ticket_group|
         %tr
           %td= Date.parse(ticket_group.date).strftime(" %b %d %Y")
           %td= ticket_group.time
           %td= link_to "#{ticket_group.home_team} vs. #{ticket_group.away_team}", ticket_group_path(ticket_group.id)
+          %td= ticket_group.venue
+          %td= ticket_group.tickets.count
+          - if ticket_group.all_tickets_sold
+            %td
+              %div.glyphicon.glyphicon-ok.green{style: 'color:green'}
+          - else
+            %td
+              %div.glyphicon.glyphicon-remove{style: 'color:red'}
+          %td
+            %ul.list-inline
+              - ticket_group.use_types.each do |type|
+                %li= type
 - else
   %h1 There are no ticket groups

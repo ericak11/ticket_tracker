@@ -1,11 +1,10 @@
 class TicketGroupsController < ApplicationController
-  before_filter :find_ticket_group, only: [:show, :update, :edit]
-  before_filter :find_ticket_groups, only: [:mass_add]
+  before_filter :get_ticket_group, only: [:show, :update, :edit]
+  before_filter :get_ticket_groups, only: [:mass_add]
 
   def index
-    @ticket_groups = TicketGroup.all.order(date: :asc)
-    @new_ticket_group = TicketGroup.new
-    @new_ticket = Ticket.new
+    @filters = params[:filter] || {}
+    find_ticket_groups
   end
 
   def show
@@ -27,8 +26,8 @@ class TicketGroupsController < ApplicationController
 
   def create
     @ticket_groups = []
-    params["num_tgs"].to_i.times {@ticket_groups << TicketGroup.create(ticket_group_params)}
-    seats = Array(params["seat_numbers_start"].to_i..params["seat_numbers_end"].to_i)
+    params[:ticket_group]["num_tgs"].to_i.times {@ticket_groups << TicketGroup.create(ticket_group_params)}
+    seats = Array(params[:ticket_group][:ticket]["seat_numbers_start"].to_i..params[:ticket_group][:ticket]["seat_numbers_end"].to_i)
     ticket_params = get_ticket_params
     @ticket_groups.each do |tg|
       seats.each do |seat|
@@ -53,8 +52,9 @@ class TicketGroupsController < ApplicationController
     { section: params["section"],
       row: params["row"],
       face_value: params["face_value"],
-      use_type: "Personal"
+      use_type: "Unlisted"
     }
+    params[:ticket_group][:ticket].permit(:section, :row, :face_value, :use_type)
   end
   def get_update_params(tg_params)
     { away_team: tg_params["away_team"],
@@ -62,17 +62,40 @@ class TicketGroupsController < ApplicationController
       notes: tg_params["notes"]
     }
   end
-  def find_ticket_group
+  def get_ticket_group
     @ticket_group = TicketGroup.find(params["id"])
   end
-  def find_ticket_groups
+  def get_ticket_groups
     @ticket_groups = TicketGroup.find(params["ticket_groups"])
   end
   def ticket_group_params
-    get_params.permit(:notes, :away_team, :home_team, :time, :date, :venue, :sport)
+    params["ticket_group"].permit(:notes, :away_team, :home_team, :time, :date, :venue, :sport)
   end
-  def get_params
-    params[:action] == "create" ? params : params["ticket_group"]
+  def find_ticket_groups
+    p = params[:filter].present? ? params[:filter].reject{|key, value|  value == "0" || value == ""} : {}
+    current_ticket_groups = TicketGroup.all.order(date: :asc)
+    if !p.empty?
+      (current_ticket_groups = current_ticket_groups.where(sport: p[:sport])) && p.delete("sport") if p[:sport].present?
+      (current_ticket_groups = current_ticket_groups.where("date >= ?", Date.today)) && p.delete("future_events") if p[:future_events].present?
+      (current_ticket_groups = current_ticket_groups.where("date < ?", Date.today)) && p.delete("past_events") if p[:past_events].present?
+      if p[:sold_tickets].present?|| p[:listed_tickets].present? || p[:unlisted_tickets].present? || p[:personal].present? || p[:business].present? || p[:unused].present?
+        filter_use_types = create_use_type_array(p)
+        current_ticket_groups = current_ticket_groups.select do |current_ticket_group|
+          !(current_ticket_group.use_types & filter_use_types).empty?
+        end
+      end
+    end
+    @ticket_groups = current_ticket_groups
+  end
+  def create_use_type_array(p)
+    use_type_array = ['Personal', 'Business', 'For Sale', 'Sold', 'Unused', 'Unlisted']
+    use_type_array.delete("Personal") unless p[:personal].present?
+    use_type_array.delete("Business") unless p[:business].present?
+    use_type_array.delete("For Sale") unless p[:listed_tickets].present?
+    use_type_array.delete("Sold") unless p[:sold_tickets].present?
+    use_type_array.delete("Unused") unless p[:unused].present?
+    use_type_array.delete("Unlisted") unless p[:unlisted_tickets].present?
+    use_type_array
   end
 end
 

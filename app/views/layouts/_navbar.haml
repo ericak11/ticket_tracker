@@ -1,15 +1,12 @@
 = navbar fixed: :top, container: 'fluid' do
   = navbar_header brand: 'Tix Tracker', brand_link: '/'
-  - if params["controller"] == "ticket_groups" && params["action"] == "index"
-    = navbar_collapse do
-      = navbar_group class: 'foo', id: 'menu' do
-        = navbar_button "Add Tickets", "data-target" => "#approvalModal", "data-toggle" => "modal"
-  - elsif params["controller"] == "ticket_groups" && params["action"] == "show"
-    = navbar_collapse do
+  = navbar_collapse do
+    = navbar_group class: 'foo', id: 'menu' do
+      = navbar_item "Add Tickets", "#", "data-target" => "#approvalModal", "data-toggle" => "modal"
+    - if params["controller"] == "ticket_groups" && params["action"] == "show"
       = navbar_group class: 'foo', id: 'menu' do
         = navbar_item "Edit Ticket Group", edit_ticket_group_path(@ticket_group.id)
         = navbar_item "Edit All Tickets", mass_edit_tickets_path(ticket_ids: @ticket_group.tickets.collect(&:id))
 
-- if params["controller"] == "ticket_groups" && params["action"] == "index"
-  = render "layouts/header"
+= render "layouts/header"
 

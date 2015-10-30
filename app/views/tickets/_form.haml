@@ -9,6 +9,7 @@
   - if params["action"] != "mass_edit"
     %h2 Editing Seat: #{@ticket.seat }
   - else
+    %h2 Editing All Tickets
     = f.text_field :section
     = f.text_field :row
   = f.text_field :face_value

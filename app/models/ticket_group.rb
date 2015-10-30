@@ -13,4 +13,7 @@ class TicketGroup < ActiveRecord::Base
     end
     true
   end
+  def use_types
+    tickets.collect(&:use_type).uniq
+  end
 end
