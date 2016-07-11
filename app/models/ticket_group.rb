@@ -1,5 +1,7 @@
-class TicketGroup < ActiveRecord::Base
+class TicketGroup < ApplicationRecord
   has_many :tickets, dependent: :destroy
+  belongs_to :user
+
   attr_accessor :num_tgs
   accepts_nested_attributes_for :tickets
 

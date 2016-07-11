@@ -42,7 +42,7 @@ class TicketGroupsController < ApplicationController
 
   def mass_edit
     params["ticket_group"].each do |ticket_group|
-      TicketGroup.find(ticket_group[0]).update(get_update_params(ticket_group[1]))
+      TicketGroup.find(ticket_group).update(get_update_params(ticket_group))
     end
     redirect_to action: :index
   end
@@ -56,21 +56,28 @@ class TicketGroupsController < ApplicationController
     }
     params[:ticket_group][:ticket].permit(:section, :row, :face_value, :use_type)
   end
-  def get_update_params(tg_params)
+
+  def get_update_params(tg_param_number)
+    tg_params = params["ticket_group"][tg_param_number.to_s].permit(:notes, :away_team, :date)
     { away_team: tg_params["away_team"],
       date: tg_params["date"],
       notes: tg_params["notes"]
     }
   end
+
   def get_ticket_group
     @ticket_group = TicketGroup.find(params["id"])
+    my_tickets?(@ticket_group.id)
   end
+
   def get_ticket_groups
     @ticket_groups = TicketGroup.find(params["ticket_groups"])
   end
+
   def ticket_group_params
-    params["ticket_group"].permit(:notes, :away_team, :home_team, :time, :date, :venue, :sport)
+    params["ticket_group"].permit(:notes, :away_team, :home_team, :time, :date, :venue, :sport, :user_id)
   end
+
   def find_ticket_groups
     p = params[:filter].present? ? params[:filter].reject{|key, value|  value == "0" || value == ""} : {}
     current_ticket_groups = TicketGroup.all.order(date: :asc)
@@ -85,8 +92,9 @@ class TicketGroupsController < ApplicationController
         end
       end
     end
-    @ticket_groups = current_ticket_groups
+    @ticket_groups = current_ticket_groups.where(user_id: current_user.id)
   end
+
   def create_use_type_array(p)
     use_type_array = ['Personal', 'Business', 'For Sale', 'Sold', 'Unused', 'Unlisted']
     use_type_array.delete("Personal") unless p[:personal].present?

@@ -1,0 +1,15 @@
+<div id="clearance" class="sign-up col-sm-6">
+  <h2><%= t(".title") %></h2>
+
+  <%= bootstrap_form_for @user, layout: :horizontal, label_col: "col-sm-4", control_col: "col-sm-7"  do |form| %>
+    <%= render partial: '/users/form', object: form %>
+
+    <div class="submit-field float-right">
+      <%= form.submit class: "btn btn-success" %>
+    </div>
+    <br>
+    <div class="other-links float-left">
+      <%= link_to t(".sign_in"), sign_in_path, class: "btn btn-info" %>
+    </div>
+  <% end %>
+</div>
