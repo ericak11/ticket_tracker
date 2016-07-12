@@ -39,6 +39,7 @@ gem 'dotenv-rails', :groups => [:development, :test]
 
 gem 'haml', '~> 4.0.5'
 gem 'clearance'
+gem 'httparty'
 
 group :development, :test do
   gem 'pry-rails'

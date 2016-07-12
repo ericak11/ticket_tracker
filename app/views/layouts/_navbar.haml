@@ -4,7 +4,7 @@
   - if signed_in?
     = navbar_collapse do
       = navbar_group class: 'foo', id: 'menu' do
-        = navbar_item "Add Tickets", "#", "data-target" => "#approvalModal", "data-toggle" => "modal"
+        = navbar_item "Mass Add Tickets", "#", "data-target" => "#approvalModal", "data-toggle" => "modal"
       - if params["controller"] == "ticket_groups" && params["action"] == "show"
         = navbar_group class: 'foo', id: 'menu' do
           = navbar_item "Edit Ticket Group", edit_ticket_group_path(@ticket_group.id)

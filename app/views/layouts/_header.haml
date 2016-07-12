@@ -12,13 +12,6 @@
           = bootstrap_form_for(@new_ticket_group, url: "/ticket_groups", method: "post",  layout: :horizontal, label_col: "col-sm-4", control_col: "col-sm-7") do |f|
             = f.select :sport, options_for_select(TicketGroup.sports)
             = f.text_field :home_team
-            = f.text_field :venue
-            = f.form_group :time, label: { text: "Time" } do
-              #datetimepicker3.input-group.date
-                = f.text_field :time, hide_label: true
-                %span.input-group-addon
-                  %span.glyphicon.glyphicon-time
-            = f.select :num_tgs, options_for_select(1..15), label: "How Many Ticket Groups are you adding?"
             = f.fields_for @new_ticket do |t|
               = t.label "Ticket Information"
               = t.text_field :section

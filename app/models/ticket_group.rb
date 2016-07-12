@@ -6,7 +6,7 @@ class TicketGroup < ApplicationRecord
   accepts_nested_attributes_for :tickets
 
   def self.sports
-    ['Hockey', 'Football', 'Basketball', 'Misc']
+    [['Hockey', 'nhl'], ['Football', 'nfl'], ['Basketball', 'nba'], 'Misc']
   end
 
   def all_tickets_sold

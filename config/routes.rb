@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   # Example resource route with options:
     resources :ticket_groups do
       collection do
-        get 'mass_add'
         get 'mass_edit'
       end
     end

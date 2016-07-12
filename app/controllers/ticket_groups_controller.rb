@@ -1,6 +1,5 @@
 class TicketGroupsController < ApplicationController
   before_filter :get_ticket_group, only: [:show, :update, :edit]
-  before_filter :get_ticket_groups, only: [:mass_add]
 
   def index
     @filters = params[:filter] || {}
@@ -25,8 +24,9 @@ class TicketGroupsController < ApplicationController
   end
 
   def create
-    @ticket_groups = []
-    params[:ticket_group]["num_tgs"].to_i.times {@ticket_groups << TicketGroup.create(ticket_group_params)}
+    query_string ="#{params[:ticket_group][:home_team]} #{params[:ticket_group][:sport]}"
+    @events = Event.list(query_string)
+    create_ticket_groups
     seats = Array(params[:ticket_group][:ticket]["seat_numbers_start"].to_i..params[:ticket_group][:ticket]["seat_numbers_end"].to_i)
     ticket_params = get_ticket_params
     @ticket_groups.each do |tg|
@@ -34,10 +34,7 @@ class TicketGroupsController < ApplicationController
         Ticket.create(ticket_params.merge({seat: seat, ticket_group_id: tg.id}))
       end
     end
-    redirect_to action: :mass_add, ticket_groups: @ticket_groups
-  end
-
-  def mass_add
+    redirect_to action: :index
   end
 
   def mass_edit
@@ -70,10 +67,6 @@ class TicketGroupsController < ApplicationController
     my_tickets?(@ticket_group.id)
   end
 
-  def get_ticket_groups
-    @ticket_groups = TicketGroup.find(params["ticket_groups"])
-  end
-
   def ticket_group_params
     params["ticket_group"].permit(:notes, :away_team, :home_team, :time, :date, :venue, :sport, :user_id)
   end
@@ -92,7 +85,7 @@ class TicketGroupsController < ApplicationController
         end
       end
     end
-    @ticket_groups = current_ticket_groups.where(user_id: current_user.id)
+    @ticket_groups = current_ticket_groups.any? ? current_ticket_groups.where(user_id: current_user.id) : []
   end
 
   def create_use_type_array(p)
@@ -105,5 +98,15 @@ class TicketGroupsController < ApplicationController
     use_type_array.delete("Unlisted") unless p[:unlisted_tickets].present?
     use_type_array
   end
-end
 
+  def create_ticket_groups
+    @ticket_groups = []
+    @events.each do |event|
+      tg = TicketGroup.find_or_initialize_by(event.merge({user_id: params[:ticket_group][:user_id]}))
+      unless tg.id.present?
+        tg.save
+        @ticket_groups << tg
+      end
+    end
+  end
+end
