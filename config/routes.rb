@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   # Example resource route with options:
     resources :ticket_groups do
       collection do
-        get 'mass_add'
         get 'mass_edit'
       end
     end
@@ -28,6 +27,7 @@ Rails.application.routes.draw do
       end
     end
 
+  resources :users, controller: :users, only: [:create, :index, :update, :edit, :destroy]
   # Example resource route with sub-resources:
   #   resources :products do
   #     resources :comments, :sales

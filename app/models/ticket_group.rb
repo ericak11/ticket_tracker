@@ -1,10 +1,12 @@
-class TicketGroup < ActiveRecord::Base
+class TicketGroup < ApplicationRecord
   has_many :tickets, dependent: :destroy
+  belongs_to :user
+
   attr_accessor :num_tgs
   accepts_nested_attributes_for :tickets
 
   def self.sports
-    ['Hockey', 'Football', 'Basketball', 'Misc']
+    [['Hockey', 'nhl'], ['Football', 'nfl'], ['Basketball', 'nba'], 'Misc']
   end
 
   def all_tickets_sold

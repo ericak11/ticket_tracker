@@ -1,13 +1,16 @@
 = navbar fixed: :top, container: 'fluid' do
   = navbar_header brand: 'Tix Tracker', brand_link: '/' do
     = image_tag 'favicon.ico', class: 'img img-circle img-responsive', style: 'height:30px;margin-top:8px;'
-  = navbar_collapse do
-    = navbar_group class: 'foo', id: 'menu' do
-      = navbar_item "Add Tickets", "#", "data-target" => "#approvalModal", "data-toggle" => "modal"
-    - if params["controller"] == "ticket_groups" && params["action"] == "show"
+  - if signed_in?
+    = navbar_collapse do
       = navbar_group class: 'foo', id: 'menu' do
-        = navbar_item "Edit Ticket Group", edit_ticket_group_path(@ticket_group.id)
-        = navbar_item "Edit All Tickets", mass_edit_tickets_path(ticket_ids: @ticket_group.tickets.collect(&:id))
+        = navbar_item "Mass Add Tickets", "#", "data-target" => "#approvalModal", "data-toggle" => "modal"
+      - if params["controller"] == "ticket_groups" && params["action"] == "show"
+        = navbar_group class: 'foo', id: 'menu' do
+          = navbar_item "Edit Ticket Group", edit_ticket_group_path(@ticket_group.id)
+          = navbar_item "Edit All Tickets", mass_edit_tickets_path(ticket_ids: @ticket_group.tickets.collect(&:id))
 
+      = navbar_group align: 'right' do
+        = link_to t(".sign_out"), sign_out_path, method: :delete, class: "sign-out btn btn-danger"
 = render "layouts/header"
 

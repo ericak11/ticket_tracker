@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.2'
+gem 'rails', '>=4.2.2'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
@@ -38,6 +38,8 @@ gem 'dotenv-rails', :groups => [:development, :test]
 # gem 'capistrano-rails', group: :development
 
 gem 'haml', '~> 4.0.5'
+gem 'clearance'
+gem 'httparty'
 
 group :development, :test do
   gem 'pry-rails'
