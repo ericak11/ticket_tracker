@@ -15,6 +15,11 @@ class TicketGroup < ApplicationRecord
     end
     true
   end
+
+  def number_of_tickets_sold
+    self.tickets.where(sold: true).count
+  end
+
   def use_types
     tickets.collect(&:use_type).uniq
   end

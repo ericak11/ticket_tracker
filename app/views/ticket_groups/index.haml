@@ -7,7 +7,7 @@
       %th Teams
       %th Venue
       %th # of Tickets
-      %th All Sold?
+      %th Sold?
       %th Use Types
     %tbody
       - @ticket_groups.each do |ticket_group|
@@ -22,7 +22,7 @@
               %div.glyphicon.glyphicon-ok.green{style: 'color:green'}
           - else
             %td
-              %div.glyphicon.glyphicon-remove{style: 'color:red'}
+              #{ticket_group.number_of_tickets_sold} / #{ticket_group.tickets.count}
           %td
             %ul.list-inline
               - ticket_group.use_types.each do |type|
