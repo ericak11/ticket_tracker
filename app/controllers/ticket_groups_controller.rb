@@ -73,7 +73,7 @@ class TicketGroupsController < ApplicationController
 
   def find_ticket_groups
     p = params[:filter].present? ? params[:filter].reject{|key, value|  value == "0" || value == ""} : {}
-    current_ticket_groups = TicketGroup.all.order(date: :asc)
+    current_ticket_groups = TicketGroup.where(user_id: current_user.id).order(date: :asc)
     if !p.empty?
       (current_ticket_groups = current_ticket_groups.where(sport: p[:sport])) && p.delete("sport") if p[:sport].present?
       (current_ticket_groups = current_ticket_groups.where("date >= ?", Date.today)) && p.delete("future_events") if p[:future_events].present?
@@ -85,7 +85,7 @@ class TicketGroupsController < ApplicationController
         end
       end
     end
-    @ticket_groups = current_ticket_groups.any? ? current_ticket_groups.where(user_id: current_user.id) : []
+    @ticket_groups = current_ticket_groups
   end
 
   def create_use_type_array(p)
